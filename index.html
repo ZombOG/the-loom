@@ -21,7 +21,15 @@
     </nav>
   </header>
 
-  <main class="container">
+  
+<main class="container">
+  <section id="login-section" class="card" style="display: none;">
+    <h2>Welcome to The Loom</h2>
+    <p>Please sign in to continue.</p>
+    <button id="sign-in-btn">Sign In with Google</button>
+  </section>
+  <section id="profile-section" style="display: none;">
+
     <section class="card">
       <h2>Welcome, <span id="displayName"></span> <small id="username"></small></h2>
       <p id="bio" class="bio-text"></p>
@@ -35,12 +43,41 @@
     <section id="post-section" class="card">
       <h3>Your Posts</h3>
     </section>
-  </main>
+  
+  </section>
+</main>
+
 
   <footer class="footer">
     <p>&copy; 2025 The Loom. All rights reserved.</p>
   </footer>
 
   <script type="module" src="profile.js"></script>
+
+<script type="module">
+  import { auth, provider } from './firebase.js';
+  import { onAuthStateChanged, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+  const loginSection = document.getElementById("login-section");
+  const profileSection = document.getElementById("profile-section");
+  const signInBtn = document.getElementById("sign-in-btn");
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      loginSection.style.display = "none";
+      profileSection.style.display = "block";
+    } else {
+      loginSection.style.display = "block";
+      profileSection.style.display = "none";
+    }
+  });
+
+  if (signInBtn) {
+    signInBtn.addEventListener("click", () => {
+      signInWithPopup(auth, provider).catch(console.error);
+    });
+  }
+</script>
+
 </body>
 </html>
