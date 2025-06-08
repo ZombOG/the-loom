@@ -11,11 +11,26 @@
     <a href="index.html">Home</a>
     <a href="profile.html" class="active">Profile</a>
     <a href="publish.html">Publish</a>
+    <button id="signOutBtn">Sign Out</button>
   </nav>
 
   <main>
-    <h1>Your Posts</h1>
-    <div id="user-posts"></div>
+    <h1 id="welcomeMessage">Welcome, user</h1>
+    <section>
+      <h2>Edit Profile</h2>
+      <form id="profile-form">
+        <label for="displayName">Display Name</label>
+        <input type="text" id="displayName" name="displayName" required />
+        <label for="bio">Bio</label>
+        <textarea id="bio" name="bio" rows="3" required></textarea>
+        <button type="submit">Save Profile</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Your Posts</h2>
+      <div id="user-posts"></div>
+    </section>
   </main>
 
   <script type="module" src="profile.js"></script>
