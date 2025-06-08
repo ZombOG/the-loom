@@ -1,42 +1,33 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Your Profile | The Loom</title>
+  <title>The Loom - Profile</title>
   <link rel="stylesheet" href="shared.css" />
-  <link rel="stylesheet" href="nav.css" />
-  <script type="module" src="profile.js" defer></script>
-  <script type="module" src="auth.js" defer></script>
 </head>
 <body>
   <nav>
-    <a href="index.html">🏠 Home</a>
-    <a href="profile.html">👤 Profile</a>
-    <a href="explore.html">🌐 Explore</a>
-    <a href="publish.html">✍️ Publish</a>
-    <button id="sign-out-link">🚪 Sign Out</button>
+    <a href="index.html">Home</a>
+    <a href="explore.html">Explore</a>
+    <a href="publish.html">Publish</a>
+    <a href="profile.html">Profile</a>
+    <a href="#" id="sign-out-link">Sign Out</a>
   </nav>
 
-  <div class="container" style="margin-top: 5rem;">
-    <h1 class="logo"><span class="logo-symbol">🕸</span> THE LOOM</h1>
-    <p class="tagline">Where minds remix minds.</p>
+  <main>
+    <section class="bio-card">
+      <h2>Welcome, <span id="displayName"></span> <small id="username"></small></h2>
+      <p id="bio"></p>
+      <form id="edit-form">
+        <label for="edit-bio">Edit Bio:</label><br>
+        <textarea id="edit-bio" rows="4" cols="40"></textarea><br>
+        <button type="submit">Save Bio</button>
+      </form>
+    </section>
+    <section id="post-section"></section>
+  </main>
 
-    <div class="profile-card">
-      <h2 id="displayName">Loading...</h2>
-      <p id="username">@loading</p>
-      <p id="bio">Fetching bio...</p>
-      <p><strong>Followers:</strong> <span id="followers">-</span> |
-         <strong>Following:</strong> <span id="following">-</span></p>
-    </div>
-
-    <form id="edit-form" class="bio-card">
-      <h3>Edit Bio</h3>
-      <textarea id="edit-bio" rows="4" style="width: 100%; font-family: Orbitron;"></textarea>
-      <br><br>
-      <button type="submit" class="cta-button">Save</button>
-    </form>
-  </div>
+  <script type="module" src="profile.js"></script>
 </body>
 </html>
