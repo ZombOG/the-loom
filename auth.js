@@ -1,3 +1,4 @@
+
 import { auth, provider, signInWithPopup, signOut, onAuthStateChanged } from './firebase.js';
 import { db } from './firebase.js';
 import { doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";

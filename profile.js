@@ -1,63 +1,45 @@
-console.log("🔥 profile.js is running");
 
-import { auth, onAuthStateChanged } from './firebase.js';
+import { auth } from './firebase.js';
 import { db } from './firebase.js';
-import { doc, getDoc, collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const feed = document.getElementById('user-post-feed');
 const userInfo = document.getElementById('user-info');
-userInfo.dataset.locked = true;
-
-async function loadUserMeta(uid) {
-  try {
-    const userDoc = doc(db, 'users', uid);
-    const snap = await getDoc(userDoc);
-    if (snap.exists()) {
-      const data = snap.data();
-      console.log("✅ Loaded user profile:", data);
-      userInfo.innerHTML = `
-        <h2>${data.username || "Unnamed User"}</h2>
-        <p><strong>Bio:</strong> ${data.bio || "No bio available."}</p>
-        <p><strong>Followers:</strong> ${data.followers ?? 0}</p>
-        <p><strong>Following:</strong> ${data.following ?? 0}</p>
-        <p><a href="profile_settings.html"><button>Edit Profile</button></a></p>
-      `;
-    } else {
-      console.warn("⚠️ No user document found for:", uid);
-      userInfo.innerHTML = "No profile found.";
-    }
-  } catch (err) {
-    console.error("❌ Error loading user metadata:", err);
-    userInfo.innerHTML = "Error loading profile.";
-  }
-}
+const userPostFeed = document.getElementById('user-post-feed');
 
 onAuthStateChanged(auth, async user => {
   if (user) {
-    console.log("🔑 User signed in:", user.uid);
-    await loadUserMeta(user.uid);
+    const userRef = doc(db, 'users', user.uid);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      console.log("👤 Profile Data:", data);
+      userInfo.innerHTML = `
+        <h2>${data.username || "Unnamed User"}</h2>
+        <p><strong>Bio:</strong> ${data.bio || "No bio available."}</p>
+        <p><strong>Email:</strong> ${data.email || "Unknown"}</p>
+        <p><strong>Followers:</strong> ${data.followers ?? 0}</p>
+        <p><strong>Following:</strong> ${data.following ?? 0}</p>
+      `;
+    }
 
-    const postsCol = collection(db, 'posts');
-    const q = query(postsCol, where('uid', '==', user.uid), orderBy('timestamp', 'desc'));
-    const postSnap = await getDocs(q);
-
+    const postsQuery = query(
+      collection(db, "posts"),
+      where("userId", "==", user.uid)
+    );
+    const postSnap = await getDocs(postsQuery);
+    userPostFeed.innerHTML = "<h3>Your Posts:</h3>";
     postSnap.forEach(doc => {
       const post = doc.data();
-      console.log("📬 Post loaded:", post);
-      const postEl = document.createElement('div');
-      postEl.className = 'post';
-      postEl.innerHTML = `
-        <h2>${post.title}</h2>
-        <h4>by ${post.username}</h4>
-        <p>${post.description}</p>
-        ${post.medialink ? `<p><a href="${post.medialink}" target="_blank">📎 Media Link</a></p>` : ''}
-        ${post.credit ? `<p class="credit">Credit: ${post.credit}</p>` : ''}
-        <small>${new Date(post.timestamp?.toDate?.() || Date.now()).toLocaleString()}</small>
+      userPostFeed.innerHTML += `
+        <div style="border: 1px solid #ccc; padding: 5px; margin: 5px;">
+          <strong>${post.title}</strong><br />
+          ${post.description}<br />
+          <em>${new Date(post.createdAt?.seconds * 1000).toLocaleString()}</em>
+        </div>
       `;
-      feed.appendChild(postEl);
     });
   } else {
-    console.log("🚪 User not signed in.");
-    userInfo.textContent = "You must be signed in to view your profile.";
+    userInfo.textContent = "Not signed in";
   }
 });
