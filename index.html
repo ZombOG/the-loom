@@ -4,18 +4,20 @@
   <meta charset="UTF-8" />
   <title>The Loom - Global Feed</title>
   <script type="module" src="./auth.js"></script>
+  <script type="module" src="./index.js"></script>
 </head>
 <body>
-<nav>
-  <a href="index.html">🏠 Home</a> |
-  <a href="profile.html">👤 Profile</a> |
-  <a href="publish.html">➕ Publish</a>
-</nav>
-<hr />
-  <h1>The Loom</h1>
+  <nav>
+    <a href="index.html">🏠 Home</a> |
+    <a href="profile.html">👤 Profile</a> |
+    <a href="publish.html">➕ Publish</a>
+  </nav>
+  <hr />
+  <h1>The Loom - Global Feed</h1>
   <div id="user-info">Checking sign-in...</div>
   <button id="sign-in">Sign In with Google</button>
   <button id="sign-out" class="hidden">Sign Out</button>
-  <p>This is the global feed. Post data will go here.</p>
+
+  <div id="post-feed"></div>
 </body>
 </html>

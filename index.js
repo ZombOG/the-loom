@@ -1,9 +1,7 @@
 import { db } from './firebase.js';
 import { collection, getDocs, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
-const feed = document.createElement('div');
-feed.id = 'post-feed';
-document.body.appendChild(feed);
+const feed = document.getElementById('post-feed');
 
 async function loadPosts() {
   const postsCol = collection(db, 'posts');
@@ -12,6 +10,8 @@ async function loadPosts() {
 
   postSnap.forEach(doc => {
     const post = doc.data();
+    console.log("Fetched post:", post); // Debug log
+
     const postEl = document.createElement('div');
     postEl.className = 'post';
     postEl.innerHTML = `
