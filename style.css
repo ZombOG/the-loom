@@ -10,17 +10,14 @@ body {
   justify-content: center;
   height: 100vh;
 }
-
 header {
   text-align: center;
   margin-bottom: 40px;
 }
-
 .logo {
   width: 120px;
   margin-bottom: 20px;
 }
-
 h1 {
   font-size: 3rem;
   background: linear-gradient(90deg, #f0f, #0ff);
@@ -28,14 +25,12 @@ h1 {
   -webkit-text-fill-color: transparent;
   margin: 0;
 }
-
 p.tagline {
   font-size: 1.2rem;
   color: #bbb;
   max-width: 400px;
   margin: 0 auto 30px;
 }
-
 .cta-button {
   padding: 12px 24px;
   font-size: 1rem;
@@ -48,11 +43,9 @@ p.tagline {
   transition: 0.3s ease;
   margin: 5px;
 }
-
 .cta-button:hover {
   transform: scale(1.05);
 }
-
 footer {
   position: absolute;
   bottom: 20px;
