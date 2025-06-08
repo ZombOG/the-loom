@@ -4,7 +4,7 @@ import { doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/fi
 
 const signInBtn = document.getElementById('sign-in');
 const signOutBtn = document.getElementById('sign-out');
-const userInfo = document.getElementById('user-info');
+const authStatus = document.getElementById('auth-status');
 
 signInBtn?.addEventListener('click', () => {
   signInWithPopup(auth, provider);
@@ -32,12 +32,7 @@ onAuthStateChanged(auth, async user => {
       }
       const latest = await getDoc(userRef);
       const username = latest.data().username || "User";
-
-      // Only show simple name if the page hasn't already customized it
-      if (userInfo && !userInfo.dataset.locked) {
-        userInfo.textContent = `Signed in as ${username}`;
-      }
-
+      if (authStatus) authStatus.textContent = `Signed in as ${username}`;
     } catch (error) {
       console.error("❌ Error fetching user profile:", error);
     }
@@ -45,9 +40,7 @@ onAuthStateChanged(auth, async user => {
     signInBtn?.classList.add('hidden');
     signOutBtn?.classList.remove('hidden');
   } else {
-    if (userInfo && !userInfo.dataset.locked) {
-      userInfo.textContent = 'Not signed in';
-    }
+    if (authStatus) authStatus.textContent = 'Not signed in';
     signInBtn?.classList.remove('hidden');
     signOutBtn?.classList.add('hidden');
   }
