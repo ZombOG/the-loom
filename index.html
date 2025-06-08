@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +17,7 @@
             <p>${post.description}</p>
             ${post.media ? `<a href="${post.media}">Media</a>` : ""}
             ${post.creditLine ? `<p><em>Credit: ${post.creditLine}</em></p>` : ""}
+            <small>${new Date(post.createdAt?.seconds * 1000).toLocaleString()}</small>
           </div>`;
       });
     }
@@ -33,8 +33,8 @@
     <button id="sign-out" class="hidden">Sign Out</button>
   </nav>
   <hr />
-  <h1>All Posts</h1>
   <div id="auth-status">Checking sign-in...</div>
+  <h1>All Posts</h1>
   <div id="global-feed"></div>
 </body>
 </html>

@@ -19,6 +19,7 @@ onAuthStateChanged(auth, async user => {
         <p><strong>Following:</strong> ${data.following}</p>
       `;
     }
+
     const postsQuery = query(collection(db, "posts"), where("userId", "==", user.uid));
     const postSnap = await getDocs(postsQuery);
     userPostFeed.innerHTML = "<h3>Your Posts:</h3>";
