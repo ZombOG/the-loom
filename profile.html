@@ -7,6 +7,7 @@
   <title>The Loom - Profile</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="profile.css">
+  <script type="module" src="profile.js" defer></script>
 </head>
 <body>
   <div class="container">
@@ -14,14 +15,14 @@
       <h1><span class="logo-symbol">🕸</span> THE LOOM</h1>
     </header>
     <div class="profile-card">
-      <img src="assets/avatar.png" alt="User Avatar" class="avatar" />
-      <h2>Mindy Gibson</h2>
-      <p class="username">@m_darksculptor</p>
+      <img id="avatar" src="assets/avatar.png" alt="User Avatar" class="avatar" />
+      <h2 id="displayName">Loading...</h2>
+      <p id="username" class="username">@...</p>
       <button class="edit-btn">Edit profile</button>
-      <p class="bio">Sculptor and electronic musician. Embracing the power of collective creation.</p>
+      <p id="bio" class="bio">Fetching bio...</p>
       <div class="follow-stats">
-        <span><strong>37</strong> Followers</span>
-        <span><strong>52</strong> Following</span>
+        <span><strong id="followers">0</strong> Followers</span>
+        <span><strong id="following">0</strong> Following</span>
       </div>
     </div>
   </div>
