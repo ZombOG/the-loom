@@ -18,8 +18,13 @@
       <img id="avatar" src="assets/avatar.png" alt="User Avatar" class="avatar" />
       <h2 id="displayName">Loading...</h2>
       <p id="username" class="username">@...</p>
-      <button class="edit-btn">Edit profile</button>
       <p id="bio" class="bio">Fetching bio...</p>
+
+      <form id="edit-form">
+        <textarea id="edit-bio" placeholder="Update your bio..." rows="3"></textarea>
+        <button type="submit" class="edit-btn">Save Profile</button>
+      </form>
+
       <div class="follow-stats">
         <span><strong id="followers">0</strong> Followers</span>
         <span><strong id="following">0</strong> Following</span>
