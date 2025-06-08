@@ -1,68 +1,97 @@
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  orderBy
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBiO6ibYUHPgcDTD3ycps_PTB8BQJiErTY",
   authDomain: "the-loom-f2e10.firebaseapp.com",
   projectId: "the-loom-f2e10",
-  storageBucket: "the-loom-f2e10.firebasestorage.app",
+  storageBucket: "the-loom-f2e10.appspot.com",
   messagingSenderId: "54331315583",
   appId: "1:54331315583:web:186ae891eff7f00111764a",
   measurementId: "G-FHHHG2R0PV"
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+// Sign out handler
+const signOutLink = document.getElementById("sign-out-link");
+if (signOutLink) {
+  signOutLink.onclick = () => signOut(auth);
+}
 
 const displayNameEl = document.getElementById("displayName");
 const usernameEl = document.getElementById("username");
 const bioEl = document.getElementById("bio");
+const editForm = document.getElementById("edit-form");
 const editBioInput = document.getElementById("edit-bio");
-const followersEl = document.getElementById("followers");
-const followingEl = document.getElementById("following");
-const form = document.getElementById("edit-form");
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    displayNameEl.textContent = user.displayName || "Unnamed";
-    usernameEl.textContent = "@" + (user.email?.split("@")[0] || "user");
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
 
-    const userRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(userRef);
-
-    if (!docSnap.exists()) {
-      // Automatically create a default profile document
-      await setDoc(userRef, {
-        bio: "",
-        followers: 0,
-        following: 0
-      });
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      displayNameEl.textContent = data.displayName || user.email;
+      usernameEl.textContent = "@" + (data.username || user.email.split("@")[0]);
+      bioEl.textContent = data.bio || "No bio yet.";
+      editBioInput.value = data.bio || "";
     }
 
-    const data = (await getDoc(userRef)).data();
-    bioEl.textContent = data.bio || "No bio yet.";
-    editBioInput.value = data.bio || "";
-    followersEl.textContent = data.followers || 0;
-    followingEl.textContent = data.following || 0;
-
-    form.onsubmit = async (e) => {
+    editForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const updatedBio = editBioInput.value.trim();
-      await setDoc(userRef, {
-        bio: updatedBio,
-        followers: data.followers || 0,
-        following: data.following || 0
-      });
-      bioEl.textContent = updatedBio;
-      alert("Profile updated!");
-    };
+      const newBio = editBioInput.value.trim();
+      await setDoc(docRef, { bio: newBio }, { merge: true });
+      bioEl.textContent = newBio;
+    });
+
+    // Load user posts
+    const postQuery = query(
+      collection(db, "posts"),
+      where("uid", "==", user.uid),
+      orderBy("timestamp", "desc")
+    );
+    const postSnapshot = await getDocs(postQuery);
+    const postContainer = document.createElement("div");
+    postContainer.className = "bio-card";
+    postContainer.innerHTML = "<h3>Your Posts</h3>";
+
+    postSnapshot.forEach((doc) => {
+      const post = doc.data();
+      const el = document.createElement("div");
+      el.className = "post-preview";
+      el.innerHTML = \`
+        <h4>\${post.title}</h4>
+        <p>\${post.description}</p>
+        <small>Media: <a href="\${post.mediaUrl}" target="_blank">View</a></small><br>
+        <small>Credit ID: \${post.creditId || "None"}</small>
+        <hr>
+      \`;
+      postContainer.appendChild(el);
+    });
+
+    document.body.appendChild(postContainer);
   } else {
     displayNameEl.textContent = "Not signed in";
     usernameEl.textContent = "@unknown";
     bioEl.textContent = "Please sign in to view your profile.";
-    form.style.display = "none";
   }
 });
