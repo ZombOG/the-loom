@@ -1,17 +1,30 @@
 import { auth, onAuthStateChanged } from './firebase.js';
 import { db } from './firebase.js';
-import { collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { doc, getDoc, collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const feed = document.getElementById('user-post-feed');
 const userInfo = document.getElementById('user-info');
 
+async function loadUserMeta(uid) {
+  const userDoc = doc(db, 'users', uid);
+  const snap = await getDoc(userDoc);
+  if (snap.exists()) {
+    const data = snap.data();
+    userInfo.innerHTML = `
+      <h2>${data.username || "Unnamed User"}</h2>
+      <p><strong>Bio:</strong> ${data.bio || "No bio available."}</p>
+      <p><strong>Followers:</strong> ${data.followers || 0}</p>
+      <p><strong>Following:</strong> ${data.following || 0}</p>
+      <p><a href="profile_settings.html"><button>Edit Profile</button></a></p>
+    `;
+  } else {
+    userInfo.innerHTML = "No profile found.";
+  }
+}
+
 onAuthStateChanged(auth, async user => {
   if (user) {
-    const userDoc = await (await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js")).getDoc(
-      (await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js")).doc(db, 'users', user.uid)
-    );
-    const username = userDoc.exists() ? userDoc.data().username : "Unknown";
-    userInfo.innerHTML = `<h2>${username}</h2><p><a href="profile_settings.html"><button>Edit Profile</button></a></p>`;
+    await loadUserMeta(user.uid);
 
     const postsCol = collection(db, 'posts');
     const q = query(postsCol, where('uid', '==', user.uid), orderBy('timestamp', 'desc'));
@@ -31,8 +44,7 @@ onAuthStateChanged(auth, async user => {
       `;
       feed.appendChild(postEl);
     });
-
   } else {
-    userInfo.textContent = "You must be signed in to view your posts.";
+    userInfo.textContent = "You must be signed in to view your profile.";
   }
 });
