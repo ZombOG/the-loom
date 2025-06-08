@@ -1,32 +1,42 @@
 import { auth, onAuthStateChanged } from './firebase.js';
 import { db } from './firebase.js';
-import { collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const form = document.querySelector('form');
-const textarea = form.querySelector('textarea');
-const creditInput = form.querySelector('input[type="text"]');
+const form = document.getElementById("publish-form");
+const contentInput = document.getElementById("post-content");
+const creditInput = document.getElementById("credit");
+const statusMsg = document.getElementById("publish-status");
 
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, (user) => {
   if (user) {
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const content = textarea.value.trim();
+      const content = contentInput.value.trim();
       const credit = creditInput.value.trim();
 
-      if (!content) return alert("Post content is required");
+      if (!content) {
+        statusMsg.textContent = "Post content is required.";
+        return;
+      }
 
-      await addDoc(collection(db, 'posts'), {
-        content,
-        credit: credit || null,
-        author: user.displayName,
-        uid: user.uid,
-        timestamp: serverTimestamp()
-      });
+      try {
+        await addDoc(collection(db, "posts"), {
+          content,
+          credit: credit || null,
+          author: user.displayName,
+          uid: user.uid,
+          timestamp: serverTimestamp(),
+        });
 
-      form.reset();
-      alert("Post published!");
+        contentInput.value = "";
+        creditInput.value = "";
+        statusMsg.textContent = "✅ Post published!";
+      } catch (error) {
+        console.error("Error publishing post:", error);
+        statusMsg.textContent = "❌ Failed to publish. Try again.";
+      }
     });
   } else {
-    alert("You must be signed in to publish.");
+    statusMsg.textContent = "You must be signed in to publish.";
   }
 });
