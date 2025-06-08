@@ -25,7 +25,8 @@ signInBtn.onclick = () => {
   signInWithPopup(auth, provider)
     .then(result => {
       const user = result.user;
-      userInfo.textContent = "Welcome, " + user.displayName;
+      const emailName = user.email?.split("@")[0] || "user";
+      userInfo.textContent = `Welcome, @${emailName}`;
     }).catch(console.error);
 };
 
