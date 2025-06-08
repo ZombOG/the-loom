@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Profile</title>
+  <script type="module" src="./auth.js"></script>
+  <script type="module" src="./profile_settings.js"></script>
+</head>
+<body>
+  <nav>
+    <a href="index.html">🏠 Home</a> |
+    <a href="profile.html">👤 Profile</a> |
+    <a href="publish.html">➕ Publish</a> |
+    <a href="profile_settings.html">⚙️ Settings</a>
+  </nav>
+  <hr />
+  <h1>Edit Your Profile</h1>
+  <div id="user-info">Loading...</div>
+  <form id="profile-form" style="display:none;">
+    <label>Username:<br>
+      <input type="text" id="username" required />
+    </label><br>
+    <label>Bio:<br>
+      <textarea id="bio" required></textarea>
+    </label><br>
+    <button type="submit">Save Changes</button>
+    <p id="status"></p>
+  </form>
+</body>
+</html>
