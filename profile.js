@@ -8,7 +8,8 @@ import {
   query,
   where,
   getDocs,
-  orderBy
+  orderBy,
+  setDoc
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import {
   getAuth,
@@ -78,13 +79,13 @@ onAuthStateChanged(auth, async (user) => {
       const post = doc.data();
       const el = document.createElement("div");
       el.className = "post-preview";
-      el.innerHTML = \`
-        <h4>\${post.title}</h4>
-        <p>\${post.description}</p>
-        <small>Media: <a href="\${post.mediaUrl}" target="_blank">View</a></small><br>
-        <small>Credit ID: \${post.creditId || "None"}</small>
+      el.innerHTML = `
+        <h4>${post.title}</h4>
+        <p>${post.description}</p>
+        <small>Media: <a href="${post.mediaUrl}" target="_blank">View</a></small><br>
+        <small>Credit ID: ${post.creditId || "None"}</small>
         <hr>
-      \`;
+      `;
       postContainer.appendChild(el);
     });
 
