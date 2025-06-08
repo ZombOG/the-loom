@@ -6,24 +6,32 @@ const feed = document.getElementById('user-post-feed');
 const userInfo = document.getElementById('user-info');
 
 async function loadUserMeta(uid) {
-  const userDoc = doc(db, 'users', uid);
-  const snap = await getDoc(userDoc);
-  if (snap.exists()) {
-    const data = snap.data();
-    userInfo.innerHTML = `
-      <h2>${data.username || "Unnamed User"}</h2>
-      <p><strong>Bio:</strong> ${data.bio || "No bio available."}</p>
-      <p><strong>Followers:</strong> ${data.followers || 0}</p>
-      <p><strong>Following:</strong> ${data.following || 0}</p>
-      <p><a href="profile_settings.html"><button>Edit Profile</button></a></p>
-    `;
-  } else {
-    userInfo.innerHTML = "No profile found.";
+  try {
+    const userDoc = doc(db, 'users', uid);
+    const snap = await getDoc(userDoc);
+    if (snap.exists()) {
+      const data = snap.data();
+      console.log("✅ Loaded user profile:", data);
+      userInfo.innerHTML = `
+        <h2>${data.username || "Unnamed User"}</h2>
+        <p><strong>Bio:</strong> ${data.bio || "No bio available."}</p>
+        <p><strong>Followers:</strong> ${data.followers ?? 0}</p>
+        <p><strong>Following:</strong> ${data.following ?? 0}</p>
+        <p><a href="profile_settings.html"><button>Edit Profile</button></a></p>
+      `;
+    } else {
+      console.warn("⚠️ No user document found for:", uid);
+      userInfo.innerHTML = "No profile found.";
+    }
+  } catch (err) {
+    console.error("❌ Error loading user metadata:", err);
+    userInfo.innerHTML = "Error loading profile.";
   }
 }
 
 onAuthStateChanged(auth, async user => {
   if (user) {
+    console.log("🔑 User signed in:", user.uid);
     await loadUserMeta(user.uid);
 
     const postsCol = collection(db, 'posts');
@@ -32,6 +40,7 @@ onAuthStateChanged(auth, async user => {
 
     postSnap.forEach(doc => {
       const post = doc.data();
+      console.log("📬 Post loaded:", post);
       const postEl = document.createElement('div');
       postEl.className = 'post';
       postEl.innerHTML = `
@@ -45,6 +54,7 @@ onAuthStateChanged(auth, async user => {
       feed.appendChild(postEl);
     });
   } else {
+    console.log("🚪 User not signed in.");
     userInfo.textContent = "You must be signed in to view your profile.";
   }
 });
