@@ -1,21 +1,26 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>The Loom</title>
-
-  <!-- Shared cyberpunk style -->
   <link rel="stylesheet" href="shared.css">
-
-  <!-- JS for auth handling -->
+  <link rel="stylesheet" href="nav.css">
   <script type="module" src="auth.js" defer></script>
 </head>
 <body>
-  <div class="container">
+  <nav>
+    <a href="index.html">🏠 Home</a>
+    <a href="profile.html">👤 Profile</a>
+    <a href="#">🌐 Explore</a>
+    <a href="#">✍️ Remix</a>
+    <button id="sign-out-link">🚪 Sign Out</button>
+  </nav>
+
+  <div class="container" style="margin-top: 5rem;">
     <h1 class="logo"><span class="logo-symbol">🕸</span> THE LOOM</h1>
     <p class="tagline">Where minds remix minds. Welcome, <span id="user-info">@guest</span></p>
-
     <div id="auth-controls">
       <button id="sign-in-btn" class="cta-button">Sign In</button>
       <button id="sign-out-btn" class="cta-button" style="display:none;">Sign Out</button>
