@@ -110,8 +110,8 @@ onAuthStateChanged(auth, async (user) => {
         const id = e.target.dataset.id;
         if (confirm("Are you sure you want to delete this post?")) {
           await deleteDoc(doc(db, "posts", id));
-          alert("Post deleted. Refreshing...");
-          location.reload();
+          alert("Post deleted.");
+          e.target.closest(".post-preview").remove();
         }
       });
     });
