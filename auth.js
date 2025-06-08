@@ -19,9 +19,7 @@ onAuthStateChanged(auth, async user => {
     const userRef = doc(db, 'users', user.uid);
     try {
       const userSnap = await getDoc(userRef);
-
       if (!userSnap.exists()) {
-        console.log("Creating new user document for:", user.uid);
         await setDoc(userRef, {
           username: user.displayName || "Unnamed",
           bio: "This user hasn't written a bio yet.",
@@ -32,20 +30,24 @@ onAuthStateChanged(auth, async user => {
         });
         console.log("✅ User profile created in Firestore.");
       }
-
-      // Get the latest user info and display the username instead of real name
       const latest = await getDoc(userRef);
       const username = latest.data().username || "User";
-      userInfo.textContent = `Signed in as ${username}`;
+
+      // Only show simple name if the page hasn't already customized it
+      if (userInfo && !userInfo.dataset.locked) {
+        userInfo.textContent = `Signed in as ${username}`;
+      }
+
     } catch (error) {
       console.error("❌ Error fetching user profile:", error);
-      userInfo.textContent = `Signed in as ${user.displayName}`;
     }
 
     signInBtn?.classList.add('hidden');
     signOutBtn?.classList.remove('hidden');
   } else {
-    userInfo.textContent = 'Not signed in';
+    if (userInfo && !userInfo.dataset.locked) {
+      userInfo.textContent = 'Not signed in';
+    }
     signInBtn?.classList.remove('hidden');
     signOutBtn?.classList.add('hidden');
   }

@@ -1,9 +1,12 @@
+console.log("🔥 profile.js is running");
+
 import { auth, onAuthStateChanged } from './firebase.js';
 import { db } from './firebase.js';
 import { doc, getDoc, collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const feed = document.getElementById('user-post-feed');
 const userInfo = document.getElementById('user-info');
+userInfo.dataset.locked = true;
 
 async function loadUserMeta(uid) {
   try {

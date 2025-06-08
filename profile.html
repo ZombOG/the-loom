@@ -2,23 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>User Profile</title>
+  <title>User Profile Page ✔️</title>
   <script type="module" src="./auth.js"></script>
   <script type="module" src="./profile.js"></script>
 </head>
 <body>
-<nav>
-  <a href="index.html">🏠 Home</a> |
-  <a href="profile.html">👤 Profile</a> |
-  <a href="publish.html">➕ Publish</a>
-</nav>
-<hr />
+  <nav>
+    <a href="index.html">🏠 Home</a> |
+    <a href="profile.html">👤 Profile</a> |
+    <a href="publish.html">➕ Publish</a> |
+    <a href="profile_settings.html">⚙️ Settings</a>
+  </nav>
+  <hr />
   <h1>Your Profile</h1>
   <div id="user-info">Checking sign-in...</div>
-  <a href="profile_settings.html"><button>Edit Profile</button></a>
   <button id="sign-in">Sign In with Google</button>
   <button id="sign-out" class="hidden">Sign Out</button>
-
   <p>This page will show only your posts.</p>
   <div id="user-post-feed"></div>
 </body>
