@@ -19,8 +19,10 @@
   <button id="sign-out" class="hidden">Sign Out</button>
 
   <form id="publish-form">
-    <textarea id="post-content" placeholder="Write your post here..." required></textarea><br>
-    <input type="text" id="credit" placeholder="Credit (optional)" /><br>
+    <input type="text" id="title" placeholder="Post Title" required /><br>
+    <textarea id="description" placeholder="Post Description" required></textarea><br>
+    <input type="url" id="media" placeholder="Media Link (optional)" /><br>
+    <input type="text" id="credit" placeholder="Credit Line (optional)" /><br>
     <button type="submit">Publish</button>
     <p id="publish-status"></p>
   </form>

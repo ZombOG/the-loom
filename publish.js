@@ -3,7 +3,9 @@ import { db } from './firebase.js';
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const form = document.getElementById("publish-form");
-const contentInput = document.getElementById("post-content");
+const titleInput = document.getElementById("title");
+const descriptionInput = document.getElementById("description");
+const mediaInput = document.getElementById("media");
 const creditInput = document.getElementById("credit");
 const statusMsg = document.getElementById("publish-status");
 
@@ -11,24 +13,30 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const content = contentInput.value.trim();
+      const title = titleInput.value.trim();
+      const description = descriptionInput.value.trim();
+      const media = mediaInput.value.trim();
       const credit = creditInput.value.trim();
 
-      if (!content) {
-        statusMsg.textContent = "Post content is required.";
+      if (!title || !description) {
+        statusMsg.textContent = "Title and Description are required.";
         return;
       }
 
       try {
         await addDoc(collection(db, "posts"), {
-          content,
+          title,
+          description,
+          media: media || null,
           credit: credit || null,
           author: user.displayName,
           uid: user.uid,
           timestamp: serverTimestamp(),
         });
 
-        contentInput.value = "";
+        titleInput.value = "";
+        descriptionInput.value = "";
+        mediaInput.value = "";
         creditInput.value = "";
         statusMsg.textContent = "✅ Post published!";
       } catch (error) {
