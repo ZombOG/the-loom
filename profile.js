@@ -32,24 +32,29 @@ onAuthStateChanged(auth, async (user) => {
 
     const userRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(userRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      bioEl.textContent = data.bio || "No bio yet.";
-      editBioInput.value = data.bio || "";
-      followersEl.textContent = data.followers || 0;
-      followingEl.textContent = data.following || 0;
-    } else {
-      bioEl.textContent = "New user — no data yet.";
-      editBioInput.value = "";
+
+    if (!docSnap.exists()) {
+      // Automatically create a default profile document
+      await setDoc(userRef, {
+        bio: "",
+        followers: 0,
+        following: 0
+      });
     }
+
+    const data = (await getDoc(userRef)).data();
+    bioEl.textContent = data.bio || "No bio yet.";
+    editBioInput.value = data.bio || "";
+    followersEl.textContent = data.followers || 0;
+    followingEl.textContent = data.following || 0;
 
     form.onsubmit = async (e) => {
       e.preventDefault();
       const updatedBio = editBioInput.value.trim();
       await setDoc(userRef, {
         bio: updatedBio,
-        followers: docSnap.exists() ? docSnap.data().followers || 0 : 0,
-        following: docSnap.exists() ? docSnap.data().following || 0 : 0
+        followers: data.followers || 0,
+        following: data.following || 0
       });
       bioEl.textContent = updatedBio;
       alert("Profile updated!");
