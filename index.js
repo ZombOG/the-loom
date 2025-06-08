@@ -10,15 +10,13 @@ async function loadPosts() {
 
   postSnap.forEach(doc => {
     const post = doc.data();
-    console.log("Fetched post:", post); // Debug log
-
     const postEl = document.createElement('div');
     postEl.className = 'post';
     postEl.innerHTML = `
       <h2>${post.title}</h2>
-      <h4>by ${post.author}</h4>
+      <h4>by ${post.username}</h4>
       <p>${post.description}</p>
-      ${post.media ? `<p><a href="${post.media}" target="_blank">📎 Media Link</a></p>` : ''}
+      ${post.medialink ? `<p><a href="${post.medialink}" target="_blank">📎 Media Link</a></p>` : ''}
       ${post.credit ? `<p class="credit">Credit: ${post.credit}</p>` : ''}
       <small>${new Date(post.timestamp?.toDate?.() || Date.now()).toLocaleString()}</small>
     `;

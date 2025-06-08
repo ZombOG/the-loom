@@ -1,29 +1,17 @@
 import { auth, onAuthStateChanged } from './firebase.js';
 import { db } from './firebase.js';
-import { doc, getDoc, collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const feed = document.getElementById('user-post-feed');
 const userInfo = document.getElementById('user-info');
 
-async function loadUserMeta(uid) {
-  const userDocRef = doc(db, 'users', uid);
-  const userSnap = await getDoc(userDocRef);
-  if (userSnap.exists()) {
-    const data = userSnap.data();
-    userInfo.innerHTML = `
-      <h2>${data.username || "Unnamed User"}</h2>
-      <p><strong>Bio:</strong> ${data.bio || "No bio available."}</p>
-      <p><strong>Followers:</strong> ${data.followers || 0}</p>
-      <p><strong>Following:</strong> ${data.following || 0}</p>
-    `;
-  } else {
-    userInfo.textContent = "User profile not found.";
-  }
-}
-
 onAuthStateChanged(auth, async user => {
   if (user) {
-    await loadUserMeta(user.uid);
+    const userDoc = await (await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js")).getDoc(
+      (await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js")).doc(db, 'users', user.uid)
+    );
+    const username = userDoc.exists() ? userDoc.data().username : "Unknown";
+    userInfo.innerHTML = `<h2>${username}</h2><p><a href="profile_settings.html"><button>Edit Profile</button></a></p>`;
 
     const postsCol = collection(db, 'posts');
     const q = query(postsCol, where('uid', '==', user.uid), orderBy('timestamp', 'desc'));
@@ -35,15 +23,16 @@ onAuthStateChanged(auth, async user => {
       postEl.className = 'post';
       postEl.innerHTML = `
         <h2>${post.title}</h2>
-        <h4>by ${post.author}</h4>
+        <h4>by ${post.username}</h4>
         <p>${post.description}</p>
-        ${post.media ? `<p><a href="${post.media}" target="_blank">📎 Media Link</a></p>` : ''}
+        ${post.medialink ? `<p><a href="${post.medialink}" target="_blank">📎 Media Link</a></p>` : ''}
         ${post.credit ? `<p class="credit">Credit: ${post.credit}</p>` : ''}
         <small>${new Date(post.timestamp?.toDate?.() || Date.now()).toLocaleString()}</small>
       `;
       feed.appendChild(postEl);
     });
+
   } else {
-    userInfo.textContent = "You must be signed in to view your profile.";
+    userInfo.textContent = "You must be signed in to view your posts.";
   }
 });

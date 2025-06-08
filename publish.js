@@ -1,6 +1,6 @@
 import { auth, onAuthStateChanged } from './firebase.js';
 import { db } from './firebase.js';
-import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { collection, addDoc, doc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const form = document.getElementById("publish-form");
 const titleInput = document.getElementById("title");
@@ -9,13 +9,16 @@ const mediaInput = document.getElementById("media");
 const creditInput = document.getElementById("credit");
 const statusMsg = document.getElementById("publish-status");
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   if (user) {
+    const userDoc = await getDoc(doc(db, 'users', user.uid));
+    const username = userDoc.exists() ? userDoc.data().username : user.displayName;
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const title = titleInput.value.trim();
       const description = descriptionInput.value.trim();
-      const media = mediaInput.value.trim();
+      const medialink = mediaInput.value.trim();
       const credit = creditInput.value.trim();
 
       if (!title || !description) {
@@ -27,9 +30,9 @@ onAuthStateChanged(auth, (user) => {
         await addDoc(collection(db, "posts"), {
           title,
           description,
-          media: media || null,
+          medialink: medialink || null,
           credit: credit || null,
-          author: user.displayName,
+          username,
           uid: user.uid,
           timestamp: serverTimestamp(),
         });
