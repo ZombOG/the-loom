@@ -45,11 +45,13 @@ const editForm = document.getElementById("edit-form");
 const editBioInput = document.getElementById("edit-bio");
 
 onAuthStateChanged(auth, async (user) => {
+  console.log("Auth state changed:", user);
   if (user) {
     const docRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
+      console.log("User doc found:", docSnap.data());
       const data = docSnap.data();
       displayNameEl.textContent = data.displayName || user.email;
       usernameEl.textContent = "@" + (data.username || user.email.split("@")[0]);
@@ -58,6 +60,7 @@ onAuthStateChanged(auth, async (user) => {
     }
 
     editForm.addEventListener("submit", async (e) => {
+      console.log("Bio form submitted");
       e.preventDefault();
       const newBio = editBioInput.value.trim();
       await setDoc(docRef, { bio: newBio }, { merge: true });
@@ -71,6 +74,7 @@ onAuthStateChanged(auth, async (user) => {
       orderBy("timestamp", "desc")
     );
     const postSnapshot = await getDocs(postQuery);
+    console.log("Fetched posts:", postSnapshot.size);
     const postContainer = document.createElement("div");
     postContainer.className = "bio-card";
     postContainer.innerHTML = "<h3>Your Posts</h3>";
