@@ -1,1 +1,47 @@
-<h1>Publish Page</h1>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Publish</title>
+  <script type="module" src="./auth.js"></script>
+  <script type="module">
+    import { db, auth } from './firebase.js';
+    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    document.getElementById('publish-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('title').value;
+      const description = document.getElementById('description').value;
+      const media = document.getElementById('media').value;
+      const credit = document.getElementById('credit').value;
+      const user = auth.currentUser;
+      if (!user) return alert("Sign in first!");
+      await addDoc(collection(db, "posts"), {
+        title,
+        description,
+        media,
+        creditLine: credit,
+        createdAt: serverTimestamp(),
+        userId: user.uid
+      });
+      alert("Post published!");
+    });
+  </script>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a> |
+    <a href="profile.html">Profile</a> |
+    <a href="publish.html">Publish</a> |
+    <button id="sign-in">Sign In</button>
+    <button id="sign-out" class="hidden">Sign Out</button>
+  </nav>
+  <h1>Publish a Post</h1>
+  <form id="publish-form">
+    <input id="title" placeholder="Title" required><br>
+    <textarea id="description" placeholder="Description"></textarea><br>
+    <input id="media" placeholder="Media link (optional)"><br>
+    <input id="credit" placeholder="Credit line (optional)"><br>
+    <button type="submit">Publish</button>
+  </form>
+</body>
+</html>

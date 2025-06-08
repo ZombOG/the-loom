@@ -1,1 +1,40 @@
-<h1>Home Page</h1>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home - The Loom</title>
+  <script type="module" src="./auth.js"></script>
+  <script type="module">
+    import { db } from './firebase.js';
+    import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    const globalFeed = document.getElementById('global-feed');
+    async function loadPosts() {
+      const posts = await getDocs(collection(db, "posts"));
+      posts.forEach(doc => {
+        const post = doc.data();
+        globalFeed.innerHTML += `
+          <div style="border:1px solid gray;margin:5px;padding:5px;">
+            <h4>${post.title}</h4>
+            <p>${post.description}</p>
+            ${post.media ? `<a href="${post.media}">Media</a>` : ""}
+            ${post.creditLine ? `<p><em>Credit: ${post.creditLine}</em></p>` : ""}
+          </div>`;
+      });
+    }
+    loadPosts();
+  </script>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a> |
+    <a href="profile.html">Profile</a> |
+    <a href="publish.html">Publish</a> |
+    <button id="sign-in">Sign In</button>
+    <button id="sign-out" class="hidden">Sign Out</button>
+  </nav>
+  <hr />
+  <h1>All Posts</h1>
+  <div id="auth-status">Checking sign-in...</div>
+  <div id="global-feed"></div>
+</body>
+</html>
