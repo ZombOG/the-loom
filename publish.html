@@ -1,30 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Publish | The Loom</title>
-  <link rel="stylesheet" href="shared.css" />
+  <title>Publish Post</title>
+  <script type="module" src="./auth.js"></script>
 </head>
 <body>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="publish.html" class="active">Publish</a>
-  </nav>
-
-  <main>
-    <h1>Publish a Post</h1>
-    <form id="publish-form">
-      <input type="text" id="post-title" placeholder="Title" required>
-      <textarea id="post-description" placeholder="What's on your mind?" required></textarea>
-      <input type="text" id="post-media-url" placeholder="Media URL (optional)">
-      <input type="text" id="post-credit-id" placeholder="Credit UID (optional)">
-      <button id="postButton" type="submit">Publish</button>
-    </form>
-    <p id="publish-status"></p>
-  </main>
-
-  <script type="module" src="publish.js"></script>
+  <h1>Publish a New Post</h1>
+  <div id="user-info">Checking sign-in...</div>
+  <button id="sign-in">Sign In with Google</button>
+  <button id="sign-out" class="hidden">Sign Out</button>
+  <form>
+    <textarea placeholder="Write your post here..."></textarea>
+    <input type="text" placeholder="Credit (optional)" />
+    <button type="submit">Publish</button>
+  </form>
 </body>
 </html>
