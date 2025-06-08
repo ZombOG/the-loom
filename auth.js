@@ -1,6 +1,6 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBiO6ibYUHPgcDTD3ycps_PTB8BQJiErTY",
@@ -21,29 +21,18 @@ const signOutBtn = document.getElementById("sign-out-btn");
 const profileBtn = document.getElementById("view-profile-btn");
 const userInfo = document.getElementById("user-info");
 
-signInBtn.onclick = () => {
-  signInWithPopup(auth, provider)
-    .then(result => {
-      const user = result.user;
-      const emailName = user.email?.split("@")[0] || "user";
-      userInfo.textContent = `Welcome, @${emailName}`;
-    }).catch(console.error);
-};
+signInBtn.onclick = () => signInWithPopup(auth, provider);
+signOutBtn.onclick = () => signOut(auth);
 
-signOutBtn.onclick = () => {
-  signOut(auth).then(() => {
-    userInfo.textContent = "";
-  });
-};
-
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, (user) => {
   if (user) {
-    userInfo.textContent = "Welcome, " + user.displayName;
+    const emailName = user.email?.split("@")[0] || "user";
+    userInfo.textContent = `@${emailName}`;
     signInBtn.style.display = "none";
     signOutBtn.style.display = "inline-block";
     profileBtn.style.display = "inline-block";
   } else {
-    userInfo.textContent = "";
+    userInfo.textContent = "@guest";
     signInBtn.style.display = "inline-block";
     signOutBtn.style.display = "none";
     profileBtn.style.display = "none";

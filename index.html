@@ -3,24 +3,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>The Loom</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script type="module" src="auth.js" defer></script>
 </head>
 <body>
-  <header>
-    <img src="assets/logo.png" alt="The Loom Logo" class="logo" />
-    <h1>The Loom</h1>
-    <p class="tagline">A shared consciousness of creativity. Where every post becomes a thread in the collective web.</p>
+  <div class="container">
+    <h1 class="logo"><span class="logo-symbol">🕸</span> THE LOOM</h1>
+    <p class="tagline">Where minds remix minds. Welcome, <span id="user-info">@guest</span></p>
     <div id="auth-controls">
       <button id="sign-in-btn" class="cta-button">Sign In</button>
       <button id="sign-out-btn" class="cta-button" style="display:none;">Sign Out</button>
       <a id="view-profile-btn" class="cta-button" href="profile.html" style="display:none;">View Profile</a>
-      <p id="user-info" class="tagline"></p>
     </div>
-  </header>
-  <footer>© 2025 The Loom — All minds welcome.</footer>
+  </div>
 </body>
 </html>
