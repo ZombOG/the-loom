@@ -1,7 +1,9 @@
 
 import { db } from "./firebase.js";
-import { auth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+const auth = getAuth();
 
 document.addEventListener("DOMContentLoaded", () => {
   const postButton = document.getElementById("post-button");
