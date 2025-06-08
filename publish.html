@@ -1,40 +1,26 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>The Loom - Publish</title>
-<link href="shared.css" rel="stylesheet"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Publish | The Loom</title>
+  <link rel="stylesheet" href="shared.css" />
 </head>
 <body>
-<header>
-<nav class="navbar">
-<div class="nav-left">
-<a class="nav-logo" href="index.html">The Loom</a>
-</div>
-<div class="nav-right">
-<a href="explore.html">Explore</a>
-<a class="active" href="publish.html">Publish</a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="publish.html" class="active">Publish</a>
+  </nav>
 
-</div>
-</nav>
-</header>
-<main class="container">
-<section class="card">
-<h2>Publish a New Post</h2>
-<form id="publish-form">
-<label for="title">Title</label><br/>
-<input id="title" name="title" required="" type="text"/><br/><br/>
-<label for="content">Content</label><br/>
-<textarea id="content" name="content" required="" rows="5"></textarea><br/><br/>
-<button type="submit">Publish</button>
-</form>
-</section>
-</main>
-<footer class="footer">
-<p>© 2025 The Loom. All rights reserved.</p>
-</footer>
-<script src="publish.js" type="module"></script>
+  <main>
+    <h1>Publish a Post</h1>
+    <textarea id="post-title" placeholder="Title"></textarea>
+    <textarea id="post-content" placeholder="What's on your mind?"></textarea>
+    <button id="post-button">Post</button>
+    <p id="status"></p>
+  </main>
+
+  <script type="module" src="publish.js"></script>
 </body>
 </html>
