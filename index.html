@@ -1,83 +1,23 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>The Loom - Profile</title>
-  <link rel="stylesheet" href="shared.css" />
+  <meta charset="UTF-8">
+  <title>The Loom - Feed</title>
+  <link rel="stylesheet" href="shared.css">
 </head>
 <body>
-  <header>
-    <nav class="navbar">
-      <div class="nav-left">
-        <a href="index.html" class="nav-logo">The Loom</a>
-      </div>
-      <div class="nav-right">
-        <a href="explore.html">Explore</a>
-        <a href="publish.html">Publish</a>
-        <a href="index.html" class="active">Profile</a>
-        <a href="#" id="sign-out-link">Sign Out</a>
-      </div>
-    </nav>
-  </header>
+  <nav>
+    <a href="index.html" class="active">Home</a>
+    <a href="profile.html">Profile</a>
+    <a href="publish.html">Publish</a>
+  </nav>
 
-  
-<main class="container">
-  <section id="login-section" class="card" style="display: none;">
-    <h2>Welcome to The Loom</h2>
-    <p>Please sign in to continue.</p>
-    <button id="sign-in-btn">Sign In with Google</button>
-  </section>
-  <section id="profile-section" style="display: none;">
-
-    <section class="card">
-      <h2>Welcome, <span id="displayName"></span> <small id="username"></small></h2>
-      <p id="bio" class="bio-text"></p>
-      <form id="edit-form" class="bio-form">
-        <label for="edit-bio">Edit Bio:</label><br>
-        <textarea id="edit-bio" rows="4" cols="50" placeholder="Write something..."></textarea><br>
-        <button type="submit">Save Bio</button>
-      </form>
-    </section>
-
-    <section id="post-section" class="card">
-      <h3>Your Posts</h3>
-    </section>
-  
-  </section>
-</main>
-
-
-  <footer class="footer">
-    <p>&copy; 2025 The Loom. All rights reserved.</p>
-  </footer>
+  <main>
+    <h1>Welcome to The Loom</h1>
+    <div id="post-feed"></div>
+  </main>
 
   <script type="module" src="index.js"></script>
-
-<script type="module">
-  import { auth, provider } from './firebase.js';
-  import { onAuthStateChanged, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-
-  const loginSection = document.getElementById("login-section");
-  const profileSection = document.getElementById("profile-section");
-  const signInBtn = document.getElementById("sign-in-btn");
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      loginSection.style.display = "none";
-      profileSection.style.display = "block";
-    } else {
-      loginSection.style.display = "block";
-      profileSection.style.display = "none";
-    }
-  });
-
-  if (signInBtn) {
-    signInBtn.addEventListener("click", () => {
-      signInWithPopup(auth, provider).catch(console.error);
-    });
-  }
-</script>
-
 </body>
 </html>
