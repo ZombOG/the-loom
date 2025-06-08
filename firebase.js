@@ -4,11 +4,11 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebas
 
 const firebaseConfig = {
   apiKey: "AIzaSyBiO6ibYUHPgcDTD3ycps_PTB8BQJiErTY",
-  authDomain: "your-project.firebaseapp.com",
-  projectId: "your-project-id",
-  storageBucket: "your-project.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID"
+  authDomain: "the-loom-f2e10.firebaseapp.com",
+  projectId: "the-loom-f2e10",
+  storageBucket: "the-loom-f2e10.firebasestorage.app",
+  messagingSenderId: "54331315583",
+  appId: "1:54331315583:web:186ae891eff7f00111764a"
 };
 
 const app = initializeApp(firebaseConfig);
