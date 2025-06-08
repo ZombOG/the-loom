@@ -1,4 +1,5 @@
 
+document.addEventListener("DOMContentLoaded", () => {
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
@@ -57,4 +58,5 @@ onAuthStateChanged(auth, user => {
   } else {
     statusDiv.innerHTML = "<p style='color:#f00;'>Please sign in to publish.</p>";
   }
+});
 });
